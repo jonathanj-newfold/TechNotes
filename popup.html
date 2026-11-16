@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TechNotes</title>
+<script src="theme-init.js"></script>
+<script src="icons.js"></script>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="shell">
+  <!-- Cases panel: every note you copy is logged here (see cases.js) -->
+  <button type="button" class="cases-edge" id="casesEdge" title="Show cases" aria-label="Show cases">&#9656;</button>
+  <aside class="cases-panel hidden" id="casesPanel" aria-label="Cases">
+    <div class="cases-split" id="casesSplitter" title="Drag to resize the Cases panel (double-click to reset)" role="separator" aria-orientation="vertical"></div>
+    <div class="cases-head">
+      <div class="cases-title">Cases <span class="cases-count" id="casesCount">0</span></div>
+      <div class="cases-head-btns">
+        <button type="button" class="icon-btn" id="casesCopyAll" title="Copy every case shown, one after another">Copy all</button>
+        <button type="button" class="icon-btn" id="casesClear" title="Remove all cases">Clear</button>
+        <button type="button" class="icon-btn" id="casesHide" title="Hide this panel">‹</button>
+      </div>
+    </div>
+    <input type="text" id="casesSearch" class="search-input cases-search" placeholder="Search cases..." maxlength="60">
+    <div class="cases-date-row" id="casesDateRow">
+      <button type="button" class="cases-date-btn" id="casesDateBtn" aria-haspopup="dialog" aria-expanded="false" title="Show the cases from one day">
+        <svg class="cases-date-ico" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 6.5h12M5.5 1.8v2.6M10.5 1.8v2.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span id="casesDateLabel">All dates</span>
+        <span class="cases-date-caret" aria-hidden="true">▾</span>
+      </button>
+      <button type="button" class="cases-date-clear hidden" id="casesDateClear" title="Show all dates" aria-label="Show all dates">✕</button>
+      <div class="cases-cal hidden" id="casesCal" role="dialog" aria-label="Pick a date"></div>
+    </div>
+    <div class="cases-list" id="casesList"></div>
+  </aside>
+  <div class="app">
+    <!-- Everything from the title down to "Clear fields" is pinned to the top of the window; only the form below it scrolls. -->
+    <div class="top-fixed" id="topFixed">
+    <!-- Top pane: title, buttons, search and tabs. Its height can be capped by dragging the divider below it (topsplit.js). -->
+    <div class="top-pane" id="topPane">
+    <div class="header">
+      <div class="header-left">
+        <button type="button" class="title title-btn" id="homeBtn" title="Go to the main page" aria-label="TechNotes - go to the main page"><img class="title-logo" src="icons/logo.svg" alt="" width="26" height="26"><span>TechNotes</span></button>
+        <div class="tagline">Write less. Resolve more.</div>
+      </div>
+      <div class="header-actions">
+        <div class="header-actions-row">
+          <button class="icon-btn icon-only" id="kbBtn" title="Open infoHub in its own window (Alt+F)" aria-label="infoHub"><img class="hi hi-logo" src="icons/infohub.svg" width="22" height="22" alt=""></button>
+          <button class="icon-btn icon-only" id="settingsBtn" title="Settings: general, placeholders, soft warnings and history" aria-label="Settings"><svg class="hi" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+          <button class="icon-btn icon-only" id="aboutBtn" title="About TechNotes" aria-label="About"><svg class="hi" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+          <button class="icon-btn icon-only theme-btn" id="themeBtn" title="Switch theme" aria-label="Switch theme"><svg class="hi" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        </div>
+        <div class="header-actions-row">
+          <button class="icon-btn icon-only" id="casesToggleBtn" title="Show or hide the Cases panel on the left" aria-label="Cases"><svg class="hi" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg></button>
+          <button class="icon-btn icon-only" id="reorderToggleBtn" title="Rearrange template tabs" aria-label="Reorder tabs" data-icon="reorder"><svg class="hi" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="6" x2="12" y2="18"/><polyline points="7 10 12 5 17 10"/><polyline points="7 14 12 19 17 14"/></svg></button>
+          <button class="icon-btn icon-only hidden" id="reorderCancelBtn" title="Cancel without saving the new order" aria-label="Cancel reordering" data-icon="close"><svg class="hi" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <button class="icon-btn icon-only" id="editToggleBtn" title="Edit this template's wording" aria-label="Edit template" data-icon="edit"><svg class="hi" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-row" id="searchRow">
+      <input type="text" id="tplSearch" class="search-input" placeholder="Search templates..." maxlength="60">
+      <button class="icon-btn hidden" id="clearSearchBtn" title="Clear search">✕</button>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    </div>
+    <div class="top-split" id="topSplitter" role="separator" aria-orientation="horizontal" tabindex="0" title="Drag to resize the top section (double-click to reset)" aria-label="Resize the top section"></div>
+    <div class="fill-actions-row">
+      <button class="btn undo-btn" id="undoBtn" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>&#8630;</button>
+      <button class="btn undo-btn" id="redoBtn" title="Redo (Ctrl+Y or Ctrl+Shift+Z)" aria-label="Redo" disabled>&#8631;</button>
+      <button class="btn clear-fields-btn" id="clearBtn" title="Clear all the fields on this template">Clear fields</button>
+      <button class="btn clear-fields-btn paste-from-btn" id="pasteFromBtn" title="Copy matching details (Domains, Invoice, Member ID...) from another template into this one" aria-haspopup="true" aria-expanded="false">Paste from &#9662;</button>
+      <div class="paste-from-menu hidden" id="pasteFromMenu" role="menu"></div>
+    </div>
+    </div>
+    <input type="file" id="importFileInput" accept="application/json,.json" class="hidden">
+    <div class="add-tpl-row hidden" id="addTplRow">
+      <div class="type-toggle" id="addTplType">
+        <button type="button" class="type-btn is-active" data-type="template">Template</button>
+        <button type="button" class="type-btn" data-type="reference">Reference table</button>
+      </div>
+      <div class="add-tpl-input-row">
+        <input type="text" id="newTplName" placeholder="Name (e.g. Refund Request)" maxlength="40">
+        <button class="btn btn-primary" id="confirmAddTpl">Add</button>
+        <button class="btn btn-ghost" id="cancelAddTpl">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Fill mode: one input per placeholder found in the active template -->
+    <div id="fillView">
+      <div class="fields" id="fields"></div>
+
+      <div class="preview-label">Preview</div>
+      <textarea id="preview" class="preview" readonly rows="7"></textarea>
+
+      <div class="footer-actions">
+        <label class="cases-log-toggle" id="casesLogWrap" title="Add the note to the Cases panel (left) whenever you copy this template. Leave off for question-and-answer templates.">
+          <input type="checkbox" id="casesLogChk"> Log to Cases
+        </label>
+        <div class="footer-actions-right">
+          <button class="btn btn-primary" id="copyBtn" title="Copy the note (Ctrl+C does the same when nothing is selected)">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit mode: raw template text with {placeholder} syntax -->
+    <div id="editView" class="hidden">
+      <div class="field" style="margin-bottom:10px">
+        <label>Template title</label>
+        <input type="text" id="templateTitleEditor" maxlength="40">
+      </div>
+      <div class="edit-hint">Use <code>{placeholder}</code> for any field you want to fill in. Field names like <code>notes</code>, <code>reason</code>, <code>status</code> get matched to a bigger box or a dropdown automatically. Use <b>Settings</b> (top right) to change any placeholder's label, input type, and its dropdown or toggle options — including the built-in ones like <code>{department}</code>, <code>{protocol}</code>, <code>{security}</code> and the auto-filled <code>{incomingPort}</code> / <code>{outgoingPort}</code>.</div>
+      <textarea id="templateEditor" class="template-editor" rows="10"></textarea>
+      <div class="preview-label">Preview</div>
+      <textarea id="editPreview" class="preview" readonly rows="7" aria-label="Preview of this template as you edit it"></textarea>
+      <div class="footer-actions">
+        <button class="btn btn-ghost" id="editLeftBtn">Restore default</button>
+        <div class="footer-actions-right">
+          <button class="btn" id="cancelEditBtn">Cancel</button>
+          <button class="btn btn-primary" id="saveTemplateBtn">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reference table view: read-only lookup table, click a cell to copy it -->
+    <div id="tableView" class="hidden">
+      <div class="ref-table-wrap" id="refTableWrap"></div>
+      <div class="footer-actions">
+        <div></div>
+        <div class="footer-actions-right">
+          <button class="btn btn-primary" id="copyTableBtn">Copy all</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit mode for a reference table: editable columns/rows -->
+    <div id="editReferenceView" class="hidden">
+      <div class="field" style="margin-bottom:10px">
+        <label>Table title</label>
+        <input type="text" id="refTitleEditor" maxlength="40">
+      </div>
+      <div class="edit-hint">Click a cell in the normal view to copy just that value — handy for grabbing one SPF record, IP, etc. The top row here is the column header: its <b>✕</b> deletes that column from every row, and the last remaining column can't be removed. To change just one row, hover a cell: <b>+</b> adds a blank cell before it and <b>✕</b> removes it, and the cells after it shift over — no other row is touched. The <b>+</b> at the end of a row adds a cell to the end of that row. For a plain list with no labels, untick the box below.</div>
+      <label class="ref-header-toggle"><input type="checkbox" id="refShowHeader" checked> Show the header row (column names)</label>
+      <div class="ref-edit-wrap" id="refEditWrap"></div>
+      <button class="btn btn-ghost ref-add-row-btn" id="addRefRowBtn">+ Row</button>
+      <div class="footer-actions">
+        <button class="btn btn-ghost" id="deleteRefBtn">Delete table</button>
+        <div class="footer-actions-right">
+          <button class="btn" id="cancelRefEditBtn">Cancel</button>
+          <button class="btn btn-primary" id="saveRefBtn">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings: manage placeholders, input types, and option lists -->
+    <div id="settingsView" class="hidden">
+      <div class="settings-head">
+        <div class="settings-title" id="settingsTitle">Settings</div>
+        <button class="icon-btn" id="settingsBackBtn">Done</button>
+      </div>
+      <div id="settingsBody"></div>
+    </div>
+
+    <!-- About: what this is, what it does, and a pun or two -->
+    <div id="aboutView" class="hidden">
+      <div class="settings-head">
+        <div class="settings-title">About</div>
+        <button class="icon-btn" id="aboutBackBtn">Done</button>
+      </div>
+
+      <div class="about-hero">
+        <img src="icons/icon48.png" width="40" height="40" alt="">
+        <div>
+          <div class="about-name">TechNotes</div>
+          <div class="about-tagline">Write less. Resolve more.</div>
+          <div class="about-version" id="aboutVersion"></div>
+        </div>
+      </div>
+      <p class="about-tagline">Note-worthy templates for people who take their cases seriously, and themselves only a little.</p>
+
+      <div class="set-block">
+        <div class="set-block-title">What is it?</div>
+        <div class="about-text">TechNotes is a pocket-sized sidekick that turns a few quick answers into a clean, consistent case note. Pick a template, fill in the blanks, hit Copy, paste it into your ticket and move on to the next one. As close to a case-closed button as we could get.</div>
+      </div>
+
+      <div class="set-block">
+        <div class="set-block-title">What it does</div>
+        <ul class="about-list">
+          <li><b>Templates for every occasion.</b> Cancellation, General Help, Change Request and Case Note come built in, plus any of your own from the + tab. Every case deserves a fitting note. <span class="pun">No one-size-fits-all here.</span></li>
+          <li><b>Smart fields.</b> Text boxes, dropdowns, toggle buttons and auto-calculated values that write the exact wording for you. <span class="pun">Less typing, more winning.</span></li>
+          <li><b>Live preview.</b> The note builds as you type, and anything left blank shows as _____ so you can spot it before you paste — unless it's marked Optional, in which case the whole line just stays out of the note. <span class="pun">No blank left behind.</span></li>
+          <li><b>DNS records.</b> Old and new DNS as tidy rows (type, host, value, TTL). Paste a zone file or a table from your DNS panel and get a change summary for free. <span class="pun">Records that are on the record.</span></li>
+          <li><b>History.</b> Snapshots of your setup are saved before changes, so you can always roll back from Settings. <span class="pun">Rewind, without the tape.</span></li>
+          <li><b>infoHub.</b> The <b>infoHub</b> button opens a separate, searchable library of your DNS settings, links, forms, requirements and canned replies, sorted into categories you can change. Entries support rich text formatting and images you can edit. <span class="pun">Look it up, don't look it over.</span></li>
+          <li><b>Reference tables.</b> Your cheat sheets, with one click to copy any cell. <span class="pun">Copy-cat approved.</span></li>
+          <li><b>Search and reorder.</b> Find a tab fast, or drag your tabs into your favorite order. <span class="pun">Tab-ulate your way to the top.</span></li>
+          <li><b>Remembers your work.</b> Close the window mid-note and everything is still there when you're back. <span class="pun">It never leaves you hanging.</span></li>
+          <li><b>Backup and themes.</b> Export and Import live in Settings, and so does the Dark / Light switch (under General). <span class="pun">We won't judge if you go to the light side.</span></li>
+        </ul>
+      </div>
+
+      <div class="set-block">
+        <div class="set-block-title">Quick tips</div>
+        <ul class="about-list">
+          <li>Press <span class="kbd">Alt</span>+<span class="kbd">C</span> to open it. <span class="pun">Faster than "may I place you on a brief hold?"</span></li>
+          <li><b>Edit template</b> changes the wording. Wrap any word in <code>{curly braces}</code> and it becomes a field on the form.</li>
+          <li><b>Clear fields</b>, right under the tabs, wipes the current template for a fresh start. <span class="pun">A clean slate, and no case of the Mondays.</span></li>
+          <li>Item not in a dropdown? Pick <b>✎ Type manually…</b> at the bottom of the list and type it. It goes into this note only; press <b>Add to list</b> if you want it saved to the dropdown for next time.</li>
+          <li>Want a detail on the same line, only for certain issues (e.g. <i>Issue: Activate domain. ABN: 12345</i>)? Make a field, use <b>Show this field</b> to pick the issue, and set its <b>Lead-in text</b> to <code>. ABN: </code>.</li>
+          <li>Everything stays in this browser: no accounts, no servers, no cloud. Just you and your notes.</li>
+        </ul>
+      </div>
+
+      <div class="set-block">
+        <div class="set-block-title">Pun of the moment</div>
+        <div class="about-pun" id="aboutPun"></div>
+        <button type="button" class="icon-btn" id="aboutPunBtn">Another one</button>
+      </div>
+
+      <div class="set-block">
+        <div class="set-block-title">Who made this</div>
+        <div class="about-text">Built by <b>Jonathan R. Juarez</b> — written one case note at a time, for anyone who'd rather spend their day solving problems than retyping the same paragraph. <span class="pun">Case in point.</span></div>
+      </div>
+
+      <div class="about-foot">Handcrafted with care and an unreasonable number of puns by Jonathan R. Juarez.</div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+  </div>
+  <script src="popup.js"></script>
+  <script src="dns.js"></script>
+  <script src="history.js"></script>
+  <script src="undo.js"></script>
+  <script src="cases.js"></script>
+  <script src="sync.js"></script>
+  <script src="settings.js"></script>
+  <script src="about.js"></script>
+  <script src="topsplit.js"></script>
+  <script src="togglefit.js"></script>
+</body>
+</html>

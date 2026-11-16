@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "TechNotes",
+  "version": "1.28.10",
+  "version_name": "1.28.10 (build 153, 2026-11-16)",
+  "description": "Hotkey-triggered case note templates for cancellation, general help, change request, and case note workflows.",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "system.display"
+  ],
+  "host_permissions": [
+    "https://ysdrgmswytrmquxmzykj.supabase.co/*"
+  ],
+  "action": {
+    "default_title": "TechNotes",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+C"
+      },
+      "description": "Open TechNotes"
+    },
+    "open-kb": {
+      "suggested_key": {
+        "default": "Alt+F"
+      },
+      "description": "Open infoHub"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

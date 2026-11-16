@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>infoHub</title>
+<link rel="icon" type="image/svg+xml" href="icons/infohub.svg">
+<script src="theme-init.js"></script>
+<link rel="stylesheet" href="kb.css">
+</head>
+<body>
+  <div class="kb-app">
+    <header class="kb-header">
+      <button type="button" class="kb-title" id="kbHomeBtn" title="Back to the infoHub home page (Esc)" aria-label="infoHub - back to the home page"><img src="icons/infohub.svg" width="24" height="24" alt=""><span>infoHub</span></button>
+      <div class="kb-search-wrap">
+        <input type="text" id="kbSearch" class="kb-search" placeholder="Search infoHub...  ( press / )" maxlength="80" autocomplete="off">
+        <button type="button" class="kb-btn hidden" id="kbSearchClear" title="Clear search">✕</button>
+      </div>
+      <div class="kb-header-btns">
+        <button type="button" class="kb-btn kb-btn-primary" id="kbAddBtn" title="Add a new entry">+ New entry</button>
+        <button type="button" class="kb-btn" id="kbCatsBtn" title="Add, rename, reorder or delete categories">Categories</button>
+        <button type="button" class="kb-btn" id="kbSyncBtn" title="Pull in any templates or reference tables from TechNotes that aren't in infoHub yet, and refresh ones you edited">Sync from templates</button>
+        <button type="button" class="kb-btn" id="kbThemeBtn" title="Switch theme">Light</button>
+      </div>
+    </header>
+
+    <div class="kb-body">
+      <nav class="kb-side" id="kbSide" aria-label="Categories"></nav>
+      <main class="kb-main">
+        <div class="kb-toolbar">
+          <div class="kb-toolbar-title" id="kbViewTitle"></div>
+          <div class="kb-toolbar-btns">
+            <button type="button" class="kb-btn kb-btn-small" id="kbExpandAll">Expand all</button>
+            <button type="button" class="kb-btn kb-btn-small" id="kbCollapseAll">Collapse all</button>
+          </div>
+        </div>
+        <div class="kb-list" id="kbList"></div>
+      </main>
+    </div>
+
+    <div id="kbModalRoot"></div>
+    <div class="kb-toast" id="kbToast"></div>
+  </div>
+  <script src="imgedit.js"></script>
+  <script src="kb.js"></script>
+</body>
+</html>
