@@ -2,7 +2,7 @@
   "name": "TechNotes",
   "short_name": "TechNotes",
   "description": "Write less. Resolve more. Case note templates, cases log and infoHub.",
-  "id": "./",
+  "id": "/TechNotes/",
   "start_url": "./?source=pwa",
   "scope": "./",
   "display": "standalone",
