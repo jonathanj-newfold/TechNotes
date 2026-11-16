@@ -1,10 +1,28 @@
-/* Web version only: a fixed dashboard width and a centred layout, since the page can't resize a browser window. */
-:root { --dash-w: 620px !important; }
+/* Web version only. The page can't resize a browser window, so the dashboard and the Cases panel are resized by
+   dragging (web/webresize.js sets --dash-w and --panel-w). Panel + dashboard are centred as one group. */
+:root { --dash-w: 620px; --panel-w: 330px; }
 body { background: var(--bg); }
-.shell { max-width: 980px; margin: 0 auto; box-shadow: 0 0 0 1px var(--border); }
+.shell { max-width: none; justify-content: center; box-shadow: none; }
+.cases-panel { flex: 0 1 var(--panel-w); width: auto; min-width: 0; }
 .cases-edge { display: none !important; } /* the header's Cases button and the panel's own arrow do the same job */
+
+/* Drag handles on the dashboard's outer edges (placed by webresize.js) */
+.dash-grip { position: fixed; top: 0; bottom: 0; width: 10px; z-index: 60; cursor: col-resize; touch-action: none; }
+.dash-grip::after { content: ""; position: absolute; top: 0; bottom: 0; left: 4px; width: 1px; background: transparent; transition: background .15s ease; }
+.dash-grip:hover::after, html.is-splitting .dash-grip::after { background: var(--accent); width: 2px; left: 4px; }
+.dash-grip.hidden { display: none; }
+html.is-splitting, html.is-splitting * { cursor: col-resize !important; user-select: none !important; }
+
+/* "Install app" help dialog */
+.tn-install-overlay { position: fixed; inset: 0; z-index: 9998; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(0, 0, 0, .6); }
+.tn-install-box { max-width: 420px; width: 100%; padding: 18px 20px 14px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 10px; font-size: 13px; line-height: 1.5; }
+.tn-install-box h3 { margin: 0 0 8px; font-size: 15px; }
+.tn-install-box p { margin: 0 0 8px; }
+.tn-install-note { color: var(--muted); font-size: 12px; }
+.tn-install-actions { display: flex; justify-content: flex-end; margin-top: 6px; }
+
 @media (max-width: 760px) {
   :root { --dash-w: 100vw !important; }
-  .shell { max-width: none; }
   .cases-panel { display: none !important; } /* phones: the Cases panel needs a wider screen */
+  .dash-grip { display: none; }
 }

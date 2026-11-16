@@ -4,6 +4,7 @@ window.__TECHNOTES_MANIFEST={"version":"1.28.10","version_name":"1.28.10 (build 
 // private to the browser it's used in. Cloud sync (Settings > General > Cloud sync) is what moves a setup between computers.
 (function () {
   if (window.chrome && chrome.storage && chrome.storage.local) return; // running as the real extension
+  window.__TECHNOTES_WEB = true; // lets the shared code skip the window-resizing it does inside the extension
   const DB = "technotes-web", STORE = "kv";
   const cache = new Map();
   const listeners = [];

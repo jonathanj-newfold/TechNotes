@@ -164,6 +164,7 @@ async function waitForLayoutChange(fromWidth) {
 // Grows (true) or shrinks (false) the window by the panel's width with the page blanked meanwhile.
 // "reveal" runs while the page is still blank, after the resize has landed.
 async function changeWindowRoom(grow, panelW, reveal) {
+  if (window.__TECHNOTES_WEB) { winHasExtra = grow; if (reveal) reveal(); applyCasesPanelState(); return; } // web: no window to resize, so no blanking either
   if (grow === winHasExtra) { if (reveal) reveal(); return; }
   const root = document.documentElement;
   const beforeW = window.innerWidth;
@@ -654,6 +655,7 @@ function dashWidth() {
   return v > 0 ? v : 534;
 }
 async function measureDashboardWidthOnce() {
+  if (window.__TECHNOTES_WEB) return;
   try { if (parseInt(localStorage.getItem("cnh_dashW2"), 10) >= 480) return; } catch (e) { return; }
   try {
     // only trust the measurement when the window still has the size background.js gave it
@@ -688,6 +690,7 @@ const MAX_DASH_W = 6000; // no practical limit: a wide / maximized window is fil
 //  - Panel hidden: the dashboard is exactly as wide as the window.
 //  - "Keep the window wide" with the panel hidden: the reserved panel room stays, the dashboard gets the extra.
 function followManualResize() {
+  if (window.__TECHNOTES_WEB) return; // web: widths are set by dragging the grips (web/webresize.js), not by the browser window
   clearTimeout(followTimer);
   const cw = Math.round(document.documentElement.clientWidth);
   const delta = prevCw ? cw - prevCw : 0;
@@ -712,6 +715,7 @@ let saveDashTimer;
 // panel hidden -> the whole window; panel showing -> the remembered split (never leaving the panel under 200px).
 // The window itself is never resized here.
 function settleDashboardOnOpen() {
+  if (window.__TECHNOTES_WEB) return;
   try {
     const cw = Math.round(document.documentElement.clientWidth);
     let w;
@@ -739,6 +743,7 @@ function settleDashboardOnOpen() {
 // (never below 400px). The split is remembered: the window opens/grows by that panel width next time.
 const MIN_DASH = 400, MIN_PANEL = 200;
 function wireCasesSplitter() {
+  if (window.__TECHNOTES_WEB) return; // web: webresize.js wires this divider (it resizes the panel itself)
   const bar = $("casesSplitter");
   if (!bar) return;
   let dragging = false;

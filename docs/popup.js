@@ -2863,7 +2863,7 @@ function applyLayoutState(layout) {
   const root = document.documentElement;
   try {
     const w = Number(layout.dashW);
-    if (w >= 360 && w <= 6000) { localStorage.setItem("cnh_dashW2", String(Math.round(w))); root.style.setProperty("--dash-w", Math.round(w) + "px"); }
+    if (!window.__TECHNOTES_WEB && w >= 360 && w <= 6000) { localStorage.setItem("cnh_dashW2", String(Math.round(w))); root.style.setProperty("--dash-w", Math.round(w) + "px"); }
     const t = Number(layout.topH);
     if (t >= 64 && t <= 6000) { localStorage.setItem("cnh_topH", String(Math.round(t))); root.style.setProperty("--top-h", Math.round(t) + "px"); root.classList.add("top-sized"); }
     if (layout.defaultSplit1) localStorage.setItem("cnh_defaultSplit1", "1");

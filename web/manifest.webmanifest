@@ -1,0 +1,16 @@
+{
+  "name": "TechNotes",
+  "short_name": "TechNotes",
+  "description": "Write less. Resolve more. Case note templates, cases log and infoHub.",
+  "id": "./",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#10141a",
+  "theme_color": "#10141a",
+  "icons": [
+    { "src": "icons/icon192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
