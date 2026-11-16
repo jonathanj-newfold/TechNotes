@@ -1,0 +1,10 @@
+/* Web version only: a fixed dashboard width and a centred layout, since the page can't resize a browser window. */
+:root { --dash-w: 620px !important; }
+body { background: var(--bg); }
+.shell { max-width: 980px; margin: 0 auto; box-shadow: 0 0 0 1px var(--border); }
+.cases-edge { display: none !important; } /* the header's Cases button and the panel's own arrow do the same job */
+@media (max-width: 760px) {
+  :root { --dash-w: 100vw !important; }
+  .shell { max-width: none; }
+  .cases-panel { display: none !important; } /* phones: the Cases panel needs a wider screen */
+}
